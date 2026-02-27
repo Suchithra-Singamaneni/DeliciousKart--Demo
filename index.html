@@ -3,1436 +3,1612 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeliciousKart — Demo</title>
+<title>DeliciousKart — Legendary Flavors, Delivered</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-/* ─── RESET & ROOT ──────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --dk-red:     #e63232;
-  --dk-orange:  #f97316;
-  --dk-green:   #16a34a;
-  --dk-yellow:  #fbbf24;
-  --dk-bg:      #fff9f5;
-  --dk-white:   #ffffff;
-  --dk-gray:    #f3f4f6;
-  --dk-border:  #e5e7eb;
-  --dk-text:    #1f2937;
-  --dk-mid:     #6b7280;
-  --dk-light:   #9ca3af;
-  --sans:       'Nunito', sans-serif;
-  --head:       'Poppins', sans-serif;
-  --shadow:     0 2px 12px rgba(0,0,0,0.08);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.12);
-}
-html { scroll-behavior: smooth; }
-body { font-family: var(--sans); color: var(--dk-text); background: #f8f8f8; font-size: 15px; }
-button { cursor: pointer; border: none; background: none; font-family: var(--sans); }
-input, select { font-family: var(--sans); }
-a { text-decoration: none; color: inherit; }
-img { display: block; max-width: 100%; }
+  :root {
+    --saffron: #E8760A;
+    --saffron-light: #F59B3A;
+    --deep-red: #8B1A1A;
+    --cream: #FDF6EC;
+    --warm-white: #FFFAF4;
+    --dark-brown: #1C0F05;
+    --medium-brown: #3D1F0A;
+    --gold: #C9932A;
+    --gold-light: #E8C06A;
+    --text-dark: #1C0F05;
+    --text-mid: #5A3A1A;
+    --text-light: #9A7050;
+    --border: rgba(200,150,80,0.2);
+    --shadow: rgba(139,60,20,0.12);
+  }
 
-/* ─── PAGES ──────────────────────────────── */
-.page { display: none; }
-.page.active { display: block; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ─── NAVBAR ─────────────────────────────── */
-.navbar {
-  background: var(--dk-white); box-shadow: var(--shadow);
-  position: sticky; top: 0; z-index: 999;
-}
-.nav-top {
-  background: var(--dk-red); color: #fff;
-  text-align: center; font-size: 0.75rem; padding: 0.4rem;
-  letter-spacing: 0.05em;
-}
-.nav-main {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 0.75rem 2rem; max-width: 1300px; margin: 0 auto;
-}
-.nav-logo {
-  font-family: var(--head); font-size: 1.5rem; font-weight: 700;
-  color: var(--dk-red); white-space: nowrap;
-}
-.nav-logo span { color: var(--dk-orange); }
-.nav-search {
-  flex: 1; display: flex; align-items: center;
-  background: var(--dk-gray); border-radius: 8px; overflow: hidden;
-  border: 1.5px solid var(--dk-border); transition: border-color 0.2s;
-  position: relative;
-}
-.nav-search:focus-within { border-color: var(--dk-orange); }
-.nav-search input {
-  flex: 1; padding: 0.6rem 1rem; background: none; border: none; outline: none;
-  font-size: 0.9rem; color: var(--dk-text);
-}
-.search-suggestions {
-  position: absolute; top: 100%; left: 0; right: 0;
-  background: var(--dk-white); border: 1px solid var(--dk-border);
-  border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);
-  display: none; z-index: 100;
-}
-.nav-search:focus-within .search-suggestions { display: block; }
-.sugg-item {
-  padding: 0.6rem 1rem; font-size: 0.85rem; cursor: pointer;
-  display: flex; align-items: center; gap: 0.5rem;
-  transition: background 0.15s;
-}
-.sugg-item:hover { background: var(--dk-gray); }
-.sugg-icon { color: var(--dk-light); font-size: 0.8rem; }
-.nav-search button {
-  padding: 0.6rem 1rem; background: var(--dk-orange); color: #fff; font-size: 0.95rem;
-}
-.nav-actions { display: flex; align-items: center; gap: 1rem; }
-.nav-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
-  font-size: 0.7rem; color: var(--dk-mid); font-weight: 600; cursor: pointer;
-  position: relative; transition: color 0.2s;
-}
-.nav-btn:hover { color: var(--dk-red); }
-.nav-btn .icon { font-size: 1.3rem; }
-.cart-badge {
-  position: absolute; top: -5px; right: -5px;
-  background: var(--dk-red); color: #fff; border-radius: 50%;
-  width: 18px; height: 18px; font-size: 0.65rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-}
-.nav-cats {
-  border-top: 1px solid var(--dk-border);
-  background: var(--dk-white);
-}
-.nav-cats-inner {
-  max-width: 1300px; margin: 0 auto; padding: 0 2rem;
-  display: flex; gap: 0.25rem; overflow-x: auto;
-}
-.cat-link {
-  padding: 0.5rem 0.85rem; font-size: 0.8rem; font-weight: 600;
-  color: var(--dk-mid); white-space: nowrap; cursor: pointer;
-  border-bottom: 2px solid transparent; transition: all 0.2s;
-}
-.cat-link:hover, .cat-link.active { color: var(--dk-red); border-bottom-color: var(--dk-red); }
+  html { scroll-behavior: smooth; }
 
-/* ─── PRODUCT PAGE ───────────────────────── */
-#page-product { background: var(--dk-bg); }
-.product-wrap {
-  max-width: 1300px; margin: 0 auto; padding: 1.5rem 2rem 3rem;
-}
-.breadcrumb { font-size: 0.78rem; color: var(--dk-light); margin-bottom: 1.25rem; }
-.breadcrumb span { color: var(--dk-red); font-weight: 600; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
 
-.product-grid {
-  display: grid; grid-template-columns: 420px 1fr; gap: 2.5rem;
-  align-items: start;
-}
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 3px; }
 
-/* IMAGE COLUMN */
-.product-images { position: sticky; top: 80px; }
-.main-img-wrap {
-  position: relative; background: var(--dk-white);
-  border-radius: 12px; border: 1px solid var(--dk-border);
-  overflow: hidden; aspect-ratio: 1/1;
-  display: flex; align-items: center; justify-content: center;
-}
-.main-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-.product-badge {
-  position: absolute; top: 12px; left: 12px;
-  display: flex; flex-direction: column; gap: 6px;
-}
-.badge {
-  padding: 3px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800;
-  letter-spacing: 0.05em; text-transform: uppercase;
-}
-.badge-bestseller { background: var(--dk-orange); color: #fff; }
-.badge-new { background: var(--dk-green); color: #fff; }
-.badge-off { background: var(--dk-red); color: #fff; }
-.thumb-row {
-  display: flex; gap: 0.5rem; margin-top: 0.75rem;
-}
-.thumb {
-  width: 68px; height: 68px; border-radius: 8px; border: 2px solid var(--dk-border);
-  overflow: hidden; cursor: pointer; transition: border-color 0.2s;
-  flex-shrink: 0;
-}
-.thumb.active, .thumb:hover { border-color: var(--dk-orange); }
-.thumb img { width: 100%; height: 100%; object-fit: cover; }
+  /* ─── ANNOUNCEMENT BAR ─── */
+  .announcement {
+    background: var(--deep-red);
+    color: #fff;
+    text-align: center;
+    padding: 9px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .announcement span { color: var(--gold-light); margin: 0 8px; }
 
-/* PRODUCT INFO */
-.product-info { padding-top: 0.25rem; }
-.prod-brand {
-  font-size: 0.78rem; font-weight: 700; color: var(--dk-orange);
-  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem;
-}
-.prod-title { font-family: var(--head); font-size: 1.5rem; font-weight: 700; line-height: 1.25; margin-bottom: 0.5rem; }
-.prod-rating { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
-.stars { color: var(--dk-yellow); font-size: 0.9rem; }
-.rating-count { font-size: 0.78rem; color: var(--dk-mid); }
+  /* ─── NAVBAR ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(253,246,236,0.96);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px var(--shadow); }
 
-/* WEIGHT + PRICE BLOCK */
-.weight-price-block {
-  background: var(--dk-white); border-radius: 10px; border: 1px solid var(--dk-border);
-  padding: 1rem 1.25rem; margin-bottom: 1.25rem;
-}
-.weight-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
-.weight-label { font-size: 0.78rem; font-weight: 700; color: var(--dk-mid); }
-.weight-option {
-  padding: 0.3rem 0.75rem; border-radius: 6px; border: 1.5px solid var(--dk-border);
-  font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
-  background: var(--dk-white);
-}
-.weight-option.active {
-  border-color: var(--dk-orange); background: #fff7ed; color: var(--dk-orange);
-}
-.price-row { display: flex; align-items: baseline; gap: 0.75rem; }
-.price-main { font-family: var(--head); font-size: 2rem; font-weight: 800; color: var(--dk-red); }
-.price-mrp { font-size: 1rem; color: var(--dk-light); text-decoration: line-through; }
-.price-save { font-size: 0.82rem; font-weight: 700; color: var(--dk-green); background: #dcfce7; padding: 2px 8px; border-radius: 4px; }
-.price-per-unit { font-size: 0.75rem; color: var(--dk-mid); margin-top: 0.2rem; }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--dark-brown);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--saffron); }
 
-/* QTY SELECTOR */
-.qty-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
-.qty-label { font-size: 0.82rem; font-weight: 700; color: var(--dk-mid); }
-.qty-ctrl {
-  display: flex; align-items: center; border: 1.5px solid var(--dk-border);
-  border-radius: 8px; overflow: hidden;
-}
-.qty-btn {
-  width: 36px; height: 36px; font-size: 1.2rem; font-weight: 700;
-  background: var(--dk-gray); color: var(--dk-text);
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s;
-}
-.qty-btn:hover { background: #e5e7eb; }
-.qty-num { width: 44px; text-align: center; font-weight: 700; font-size: 0.95rem; }
-.qty-unit { font-size: 0.78rem; color: var(--dk-mid); font-weight: 600; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-mid);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--saffron); }
 
-/* ACTION BUTTONS */
-.action-btns { display: grid; grid-template-columns: 1fr 1fr 48px; gap: 0.75rem; margin-bottom: 1.5rem; }
-.btn-cart {
-  padding: 0.9rem; border-radius: 10px; font-size: 0.92rem; font-weight: 800;
-  background: var(--dk-orange); color: #fff; transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-}
-.btn-cart:hover { background: #ea6c00; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(249,115,22,0.3); }
-.btn-buynow {
-  padding: 0.9rem; border-radius: 10px; font-size: 0.92rem; font-weight: 800;
-  background: var(--dk-red); color: #fff; transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-}
-.btn-buynow:hover { background: #c41e1e; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(230,50,50,0.3); }
-.btn-wishlist {
-  padding: 0.9rem; border-radius: 10px; border: 1.5px solid var(--dk-border);
-  font-size: 1.3rem; color: var(--dk-mid); transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-}
-.btn-wishlist.active { color: var(--dk-red); border-color: var(--dk-red); background: #fff0f0; }
-.btn-wishlist:hover { border-color: var(--dk-red); color: var(--dk-red); }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 
-/* USPs */
-.usp-row {
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1.25rem;
-}
-.usp-card {
-  text-align: center; padding: 0.75rem 0.5rem;
-  background: var(--dk-white); border-radius: 8px; border: 1px solid var(--dk-border);
-}
-.usp-card .usp-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
-.usp-card .usp-text { font-size: 0.72rem; font-weight: 700; color: var(--dk-mid); line-height: 1.3; }
+  .search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-size: 18px;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .search-btn:hover { color: var(--saffron); }
 
-/* FEATURES */
-.features-block { background: var(--dk-white); border-radius: 10px; border: 1px solid var(--dk-border); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
-.features-title { font-weight: 800; font-size: 0.88rem; margin-bottom: 0.6rem; color: var(--dk-text); }
-.feature-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.ftag {
-  padding: 0.3rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-  background: #fef3c7; color: #92400e; border: 1px solid #fde68a;
-}
+  .cart-btn {
+    position: relative;
+    background: var(--saffron);
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.2px;
+  }
+  .cart-btn:hover { background: var(--medium-brown); transform: scale(1.03); }
+  .cart-count {
+    background: #fff;
+    color: var(--saffron);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-/* DESCRIPTION */
-.desc-block { margin-bottom: 1.25rem; }
-.desc-block .desc-title { font-weight: 800; font-size: 0.88rem; margin-bottom: 0.5rem; }
-.desc-block p { font-size: 0.85rem; color: var(--dk-mid); line-height: 1.7; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-dark);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
 
-/* DISCOUNT LADDER */
-.discount-block {
-  background: linear-gradient(135deg, #fff7ed, #fff); border: 1.5px solid #fed7aa;
-  border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;
-}
-.discount-title { font-weight: 800; font-size: 0.85rem; color: var(--dk-orange); margin-bottom: 0.5rem; }
-.discount-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-.discount-table th { text-align: left; padding: 0.3rem 0.5rem; color: var(--dk-mid); font-weight: 700; }
-.discount-table td { padding: 0.3rem 0.5rem; }
-.discount-table tr:nth-child(even) { background: rgba(249,115,22,0.05); }
-.disc-val { color: var(--dk-green); font-weight: 800; }
+  /* ─── MOBILE MENU ─── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--dark-brown);
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .mobile-menu a:hover { color: var(--saffron); }
+  .close-menu {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-dark);
+  }
 
-/* PINCODE */
-.pincode-block {
-  background: var(--dk-white); border-radius: 10px; border: 1px solid var(--dk-border);
-  padding: 1rem 1.25rem; margin-bottom: 1rem;
-}
-.pincode-row { display: flex; gap: 0.5rem; align-items: center; }
-.pincode-row input {
-  flex: 1; padding: 0.5rem 0.75rem; border: 1.5px solid var(--dk-border);
-  border-radius: 7px; font-size: 0.85rem; outline: none; transition: border-color 0.2s;
-}
-.pincode-row input:focus { border-color: var(--dk-orange); }
-.btn-check { padding: 0.5rem 1rem; background: var(--dk-orange); color: #fff; border-radius: 7px; font-size: 0.82rem; font-weight: 700; }
-.delivery-result { margin-top: 0.5rem; font-size: 0.8rem; color: var(--dk-green); font-weight: 600; display: none; }
-.delivery-result.show { display: block; }
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 92vh;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 50%, rgba(232,118,10,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 70%, rgba(139,26,26,0.08) 0%, transparent 60%),
+      var(--warm-white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 60px 5vw;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+  }
 
-/* ─── SIMILAR PRODUCTS (shown on cart) ────── */
-.section-title { font-family: var(--head); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; }
-.products-row { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
-.prod-mini-card {
-  min-width: 160px; background: var(--dk-white); border-radius: 10px;
-  border: 1px solid var(--dk-border); overflow: hidden; flex-shrink: 0;
-  cursor: pointer; transition: box-shadow 0.2s;
-}
-.prod-mini-card:hover { box-shadow: var(--shadow); }
-.prod-mini-img { aspect-ratio: 1/1; overflow: hidden; background: var(--dk-gray); position: relative; }
-.prod-mini-img img { width: 100%; height: 100%; object-fit: cover; }
-.prod-mini-body { padding: 0.5rem 0.6rem; }
-.prod-mini-name { font-size: 0.78rem; font-weight: 700; color: var(--dk-text); margin-bottom: 0.2rem; line-height: 1.3; }
-.prod-mini-price { font-size: 0.85rem; font-weight: 800; color: var(--dk-red); }
-.prod-mini-mrp { font-size: 0.72rem; color: var(--dk-light); text-decoration: line-through; }
-.btn-mini-add {
-  width: 100%; padding: 0.4rem; background: var(--dk-orange); color: #fff;
-  font-size: 0.75rem; font-weight: 700; text-align: center;
-}
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(232,118,10,0.08), transparent 70%);
+    border-radius: 50%;
+    animation: pulse 4s ease-in-out infinite;
+  }
 
-/* ─── CART PAGE ─────────────────────────── */
-#page-cart { background: var(--dk-bg); padding: 2rem 0; }
-.cart-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 340px; gap: 2rem; }
-.cart-main {}
-.cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-.cart-count { font-size: 0.85rem; color: var(--dk-mid); font-weight: 600; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+  }
 
-/* CART ITEM */
-.cart-item {
-  background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border);
-  padding: 1rem 1.25rem; margin-bottom: 1rem; display: grid;
-  grid-template-columns: 80px 1fr auto; gap: 1rem; align-items: center;
-}
-.cart-item-img { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-.cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
-.cart-item-name { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.2rem; }
-.cart-item-variant { font-size: 0.75rem; color: var(--dk-mid); margin-bottom: 0.5rem; }
-.cart-item-qty { display: flex; align-items: center; gap: 0.5rem; }
-.cq-btn { width: 28px; height: 28px; background: var(--dk-gray); border-radius: 5px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-.cq-btn:hover { background: #d1d5db; }
-.cq-num { width: 32px; text-align: center; font-weight: 700; font-size: 0.9rem; }
-.cart-item-remove { font-size: 0.75rem; color: var(--dk-red); cursor: pointer; margin-top: 0.5rem; }
-.cart-item-price { text-align: right; }
-.ci-price { font-family: var(--head); font-size: 1.1rem; font-weight: 800; color: var(--dk-text); }
-.ci-mrp { font-size: 0.75rem; color: var(--dk-light); text-decoration: line-through; }
-.ci-save { font-size: 0.72rem; color: var(--dk-green); font-weight: 700; }
+  .hero-text { position: relative; z-index: 1; }
 
-/* Buy Again */
-.buy-again-section { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1.25rem; margin-bottom: 1rem; }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,118,10,0.1);
+    border: 1px solid rgba(232,118,10,0.25);
+    color: var(--saffron);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.6s ease both;
+  }
 
-/* COUPON */
-.coupon-block { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1rem 1.25rem; margin-bottom: 1rem; }
-.coupon-row { display: flex; gap: 0.5rem; }
-.coupon-row input { flex: 1; padding: 0.55rem 0.85rem; border: 1.5px solid var(--dk-border); border-radius: 7px; font-size: 0.85rem; outline: none; }
-.coupon-row input:focus { border-color: var(--dk-orange); }
-.btn-apply { padding: 0.55rem 1.1rem; background: var(--dk-orange); color: #fff; border-radius: 7px; font-weight: 700; font-size: 0.85rem; }
+  .hero-tag::before {
+    content: '✦';
+    font-size: 10px;
+  }
 
-/* ORDER SUMMARY */
-.order-summary { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1.25rem; position: sticky; top: 80px; }
-.summary-title { font-family: var(--head); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 1px solid var(--dk-border); padding-bottom: 0.75rem; }
-.summary-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem; }
-.summary-row.discount { color: var(--dk-green); font-weight: 700; }
-.summary-row.total { font-weight: 800; font-size: 1rem; border-top: 1px solid var(--dk-border); padding-top: 0.75rem; margin-top: 0.5rem; }
-.summary-row.total span:last-child { color: var(--dk-red); font-size: 1.1rem; }
-.savings-banner { background: #dcfce7; border-radius: 7px; padding: 0.5rem 0.75rem; font-size: 0.78rem; font-weight: 700; color: var(--dk-green); margin: 0.75rem 0; text-align: center; }
-.btn-checkout { width: 100%; padding: 1rem; background: var(--dk-red); color: #fff; border-radius: 10px; font-weight: 800; font-size: 1rem; margin-top: 1rem; transition: all 0.2s; }
-.btn-checkout:hover { background: #c41e1e; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(230,50,50,0.3); }
-.trust-badges { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
-.trust-badge { font-size: 0.7rem; color: var(--dk-mid); display: flex; align-items: center; gap: 0.25rem; }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 5.5vw, 76px);
+    font-weight: 900;
+    line-height: 1.06;
+    color: var(--dark-brown);
+    margin-bottom: 24px;
+    animation: fadeInUp 0.7s ease 0.1s both;
+  }
 
-/* ─── CHECKOUT ────────────────────────────── */
-#page-checkout { background: var(--dk-bg); padding: 2rem 0; }
-.checkout-wrap { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--saffron);
+  }
 
-/* PROGRESS BAR */
-.progress-bar {
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 2rem;
-}
-.prog-step { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
-.prog-circle {
-  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--dk-border);
-  background: var(--dk-white); display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; font-weight: 800; color: var(--dk-light); transition: all 0.3s;
-}
-.prog-circle.done { background: var(--dk-green); border-color: var(--dk-green); color: #fff; }
-.prog-circle.active { background: var(--dk-orange); border-color: var(--dk-orange); color: #fff; }
-.prog-label { font-size: 0.68rem; font-weight: 700; color: var(--dk-light); white-space: nowrap; }
-.prog-label.active { color: var(--dk-orange); }
-.prog-label.done { color: var(--dk-green); }
-.prog-line { flex: 1; height: 2px; background: var(--dk-border); max-width: 80px; transition: background 0.3s; }
-.prog-line.done { background: var(--dk-green); }
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 36px;
+    animation: fadeInUp 0.7s ease 0.2s both;
+  }
 
-.checkout-grid { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; }
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.7s ease 0.3s both;
+  }
 
-/* CHECKOUT STEPS */
-.checkout-step { display: none; }
-.checkout-step.active { display: block; }
-.step-card { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1.5rem; margin-bottom: 1rem; }
-.step-card-title { font-family: var(--head); font-weight: 700; font-size: 1.05rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
-.step-card-title span { font-size: 1.2rem; }
+  .btn-primary {
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--medium-brown); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,118,10,0.35); }
 
-/* FORM FIELDS */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
-.form-grid.single { grid-template-columns: 1fr; }
-.form-group { display: flex; flex-direction: column; gap: 0.3rem; }
-.form-group.full { grid-column: 1/-1; }
-.form-group label { font-size: 0.78rem; font-weight: 700; color: var(--dk-mid); }
-.form-group label .req { color: var(--dk-red); }
-.form-group input, .form-group select {
-  padding: 0.6rem 0.85rem; border: 1.5px solid var(--dk-border);
-  border-radius: 8px; font-size: 0.88rem; outline: none; transition: border-color 0.2s;
-  background: var(--dk-white);
-}
-.form-group input:focus, .form-group select:focus { border-color: var(--dk-orange); }
-.field-hint { font-size: 0.72rem; color: var(--dk-light); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-dark);
+    border: 1.5px solid var(--border);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--saffron); color: var(--saffron); transform: translateY(-2px); }
 
-/* SAVED ADDRESS */
-.addr-card {
-  border: 2px solid var(--dk-border); border-radius: 10px; padding: 1rem;
-  cursor: pointer; transition: all 0.2s; margin-bottom: 0.75rem; display: flex; gap: 0.75rem;
-}
-.addr-card.selected { border-color: var(--dk-orange); background: #fff7ed; }
-.addr-radio { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--dk-orange); flex-shrink: 0; }
-.addr-name { font-weight: 700; font-size: 0.9rem; }
-.addr-line { font-size: 0.82rem; color: var(--dk-mid); }
-.addr-tag { font-size: 0.68rem; background: var(--dk-gray); padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--dk-mid); }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 48px;
+    animation: fadeInUp 0.7s ease 0.4s both;
+  }
 
-/* DELIVERY OPTIONS */
-.delivery-option {
-  border: 2px solid var(--dk-border); border-radius: 10px; padding: 1rem 1.25rem;
-  cursor: pointer; transition: all 0.2s; margin-bottom: 0.75rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.delivery-option.selected { border-color: var(--dk-orange); background: #fff7ed; }
-.del-left { display: flex; align-items: center; gap: 0.75rem; }
-.del-icon { font-size: 1.4rem; }
-.del-name { font-weight: 700; font-size: 0.9rem; }
-.del-eta { font-size: 0.78rem; color: var(--dk-mid); }
-.del-price { font-weight: 800; font-size: 0.95rem; }
-.del-price.free { color: var(--dk-green); }
+  .stat h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--saffron);
+  }
+  .stat p { font-size: 12px; color: var(--text-light); letter-spacing: 0.5px; }
 
-/* PAYMENT */
-.payment-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-.pay-tab {
-  padding: 0.5rem 1rem; border-radius: 8px; border: 1.5px solid var(--dk-border);
-  font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
-  display: flex; align-items: center; gap: 0.4rem;
-}
-.pay-tab.active { border-color: var(--dk-orange); background: #fff7ed; color: var(--dk-orange); }
-.pay-tab:hover { border-color: var(--dk-orange); }
-.pay-content { display: none; }
-.pay-content.active { display: block; }
-.upi-input { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
-.upi-input input { flex: 1; padding: 0.6rem 0.85rem; border: 1.5px solid var(--dk-border); border-radius: 8px; font-size: 0.88rem; outline: none; }
-.upi-input input:focus { border-color: var(--dk-orange); }
-.upi-apps { display: flex; gap: 0.75rem; }
-.upi-app { width: 56px; text-align: center; cursor: pointer; }
-.upi-app img { width: 40px; height: 40px; border-radius: 8px; margin: 0 auto 0.2rem; background: var(--dk-gray); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-.upi-app span { font-size: 0.65rem; color: var(--dk-mid); font-weight: 600; }
-.upi-emoji { width: 40px; height: 40px; border-radius: 8px; background: var(--dk-gray); font-size: 1.4rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem; }
-.cod-note { background: var(--dk-gray); border-radius: 8px; padding: 0.75rem; font-size: 0.82rem; color: var(--dk-mid); }
+  .hero-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 1s ease 0.2s both;
+  }
 
-/* LOYALTY POINTS */
-.loyalty-block {
-  background: linear-gradient(135deg, #fef3c7, #fff7ed); border: 1.5px solid #fde68a;
-  border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 1rem;
-  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-}
-.loyalty-info .loyalty-title { font-weight: 700; font-size: 0.85rem; color: var(--dk-orange); }
-.loyalty-info .loyalty-pts { font-size: 0.8rem; color: var(--dk-mid); }
-.toggle-switch {
-  width: 44px; height: 24px; background: var(--dk-border); border-radius: 12px;
-  position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0;
-}
-.toggle-switch.on { background: var(--dk-orange); }
-.toggle-switch::after {
-  content: ''; position: absolute; top: 3px; left: 3px;
-  width: 18px; height: 18px; border-radius: 50%; background: #fff;
-  transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-.toggle-switch.on::after { transform: translateX(20px); }
+  .hero-circle {
+    width: min(480px, 90%);
+    aspect-ratio: 1;
+    background: radial-gradient(circle at 40% 40%, rgba(232,118,10,0.18), rgba(139,26,26,0.08));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px solid rgba(232,118,10,0.15);
+  }
 
-/* SOCIAL LOGIN */
-.social-login { display: flex; gap: 0.75rem; margin-bottom: 1rem; }
-.btn-social {
-  flex: 1; padding: 0.65rem; border-radius: 9px; border: 1.5px solid var(--dk-border);
-  font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  transition: all 0.2s;
-}
-.btn-social:hover { border-color: var(--dk-orange); background: #fff7ed; }
-.or-divider { text-align: center; position: relative; margin: 0.75rem 0; }
-.or-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--dk-border); }
-.or-divider span { background: var(--dk-white); position: relative; padding: 0 0.75rem; font-size: 0.75rem; color: var(--dk-light); font-weight: 600; }
+  .hero-emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 32px;
+  }
 
-/* GUEST PROMPT */
-.guest-prompt {
-  background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border);
-  padding: 1.5rem; text-align: center;
-}
-.guest-or { margin: 1rem 0; }
-.btn-guest { width: 100%; padding: 0.9rem; background: var(--dk-orange); color: #fff; border-radius: 10px; font-weight: 800; font-size: 0.95rem; }
+  .emoji-card {
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(200,150,80,0.2);
+    border-radius: 20px;
+    padding: 20px 12px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .emoji-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px var(--shadow); }
+  .emoji-card .em { font-size: 32px; margin-bottom: 8px; display: block; }
+  .emoji-card span { font-size: 11px; color: var(--text-mid); font-weight: 500; }
 
-/* CTA BUTTONS */
-.step-cta { width: 100%; padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1rem; margin-top: 1rem; transition: all 0.2s; }
-.step-cta.primary { background: var(--dk-orange); color: #fff; }
-.step-cta.primary:hover { background: #ea6c00; transform: translateY(-1px); }
-.step-cta.danger { background: var(--dk-red); color: #fff; }
-.step-cta.danger:hover { background: #c41e1e; transform: translateY(-1px); }
-.back-link { font-size: 0.82rem; color: var(--dk-mid); margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; }
-.back-link:hover { color: var(--dk-orange); }
+  .floating-badge {
+    position: absolute;
+    background: var(--dark-brown);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    animation: float 3s ease-in-out infinite;
+  }
+  .floating-badge.b1 { top: 10%; right: -20px; }
+  .floating-badge.b2 { bottom: 15%; left: -30px; background: var(--saffron); animation-delay: 1.5s; }
 
-/* MINI ORDER SUMMARY */
-.mini-summary { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1.25rem; position: sticky; top: 80px; }
-.mini-item { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
-.mini-item-img { width: 48px; height: 48px; border-radius: 7px; overflow: hidden; flex-shrink: 0; }
-.mini-item-img img { width: 100%; height: 100%; object-fit: cover; }
-.mini-item-name { font-size: 0.8rem; font-weight: 700; flex: 1; }
-.mini-item-price { font-size: 0.85rem; font-weight: 800; color: var(--dk-red); }
-.mini-divider { border: none; border-top: 1px solid var(--dk-border); margin: 0.75rem 0; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 
-/* ─── CONFIRMATION ───────────────────────── */
-#page-confirm { background: var(--dk-bg); padding: 3rem 0; }
-.confirm-wrap { max-width: 600px; margin: 0 auto; padding: 0 2rem; text-align: center; }
-.confirm-icon { font-size: 4rem; margin-bottom: 1rem; animation: bounce 0.5s ease; }
-@keyframes bounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-.confirm-title { font-family: var(--head); font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
-.confirm-sub { color: var(--dk-mid); font-size: 0.92rem; margin-bottom: 2rem; }
-.order-card { background: var(--dk-white); border-radius: 12px; border: 1px solid var(--dk-border); padding: 1.5rem; text-align: left; margin-bottom: 1.5rem; }
-.order-id { font-size: 0.78rem; color: var(--dk-mid); font-weight: 600; }
-.order-id strong { color: var(--dk-orange); font-size: 0.95rem; }
-.order-detail-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.5rem 0; border-bottom: 1px solid var(--dk-border); }
-.order-detail-row:last-child { border-bottom: none; }
-.confirm-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
-.btn-track { flex: 1; padding: 0.9rem; background: var(--dk-orange); color: #fff; border-radius: 10px; font-weight: 800; font-size: 0.95rem; }
-.btn-invoice { flex: 1; padding: 0.9rem; border: 1.5px solid var(--dk-border); border-radius: 10px; font-weight: 800; font-size: 0.95rem; color: var(--dk-mid); }
-.whatsapp-btn { width: 100%; padding: 0.85rem; background: #22c55e; color: #fff; border-radius: 10px; font-weight: 800; margin-top: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-/* POST-ORDER SIGNUP */
-.post-signup { background: linear-gradient(135deg, #fff7ed, #fff); border: 1.5px solid #fed7aa; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; }
-.post-signup-title { font-weight: 800; font-size: 0.95rem; color: var(--dk-orange); margin-bottom: 0.35rem; }
-.post-signup p { font-size: 0.82rem; color: var(--dk-mid); margin-bottom: 0.75rem; }
-.post-signup input { width: 100%; padding: 0.55rem 0.85rem; border: 1.5px solid var(--dk-border); border-radius: 7px; margin-bottom: 0.5rem; font-size: 0.85rem; outline: none; }
-.btn-create-acc { width: 100%; padding: 0.7rem; background: var(--dk-orange); color: #fff; border-radius: 8px; font-weight: 800; }
+  /* ─── TRUST BAR ─── */
+  .trust-bar {
+    background: var(--dark-brown);
+    padding: 20px 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.85);
+  }
+  .trust-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .trust-item h4 { font-size: 13px; font-weight: 600; color: #fff; }
+  .trust-item p { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 1px; }
 
-/* ─── WISHLIST SIDE PANEL ────────────────── */
-.wishlist-panel {
-  position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
-  background: var(--dk-white); border-left: 1px solid var(--dk-border);
-  z-index: 9999; transition: right 0.3s; padding: 1.5rem;
-  overflow-y: auto; box-shadow: -4px 0 24px rgba(0,0,0,0.12);
-}
-.wishlist-panel.open { right: 0; }
-.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-.panel-title { font-family: var(--head); font-weight: 700; font-size: 1.05rem; }
-.panel-close { font-size: 1.5rem; cursor: pointer; color: var(--dk-mid); }
-.wishlist-item { display: flex; gap: 0.75rem; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--dk-border); }
-.wi-img { width: 56px; height: 56px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-.wi-img img { width: 100%; height: 100%; object-fit: cover; }
-.wi-name { font-size: 0.82rem; font-weight: 700; flex: 1; }
-.wi-price { font-size: 0.85rem; font-weight: 800; color: var(--dk-red); }
-.wi-add { font-size: 0.75rem; color: var(--dk-orange); font-weight: 700; cursor: pointer; margin-top: 0.25rem; }
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9998; display: none; }
-.overlay.show { display: block; }
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .section-header .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--dark-brown);
+    line-height: 1.15;
+  }
+  .section-header h2 em { font-style: italic; color: var(--saffron); }
+  .section-header p {
+    font-size: 15px;
+    color: var(--text-mid);
+    margin-top: 12px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
 
-/* ─── TOAST ─────────────────────────────── */
-.toast {
-  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99999;
-  background: var(--dk-text); color: #fff; padding: 0.75rem 1.25rem;
-  border-radius: 10px; font-size: 0.85rem; font-weight: 600;
-  display: flex; align-items: center; gap: 0.5rem;
-  transform: translateY(80px); opacity: 0; transition: all 0.3s;
-  box-shadow: var(--shadow-lg);
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { border-left: 4px solid var(--dk-green); }
-.toast.info { border-left: 4px solid var(--dk-orange); }
+  /* ─── CATEGORIES ─── */
+  .categories {
+    padding: 80px 5vw;
+    background: var(--cream);
+  }
 
-/* ─── FOOTER ─────────────────────────────── */
-footer { background: var(--dk-text); color: #fff; padding: 2rem; text-align: center; font-size: 0.8rem; color: #9ca3af; }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
 
-/* ─── RESPONSIVE ─────────────────────────── */
-@media (max-width: 900px) {
-  .product-grid { grid-template-columns: 1fr; }
-  .product-images { position: static; }
-  .cart-wrap { grid-template-columns: 1fr; }
-  .order-summary { position: static; }
-  .checkout-grid { grid-template-columns: 1fr; }
-  .mini-summary { position: static; }
-  .usp-row { grid-template-columns: repeat(3,1fr); }
-  .action-btns { grid-template-columns: 1fr 1fr 48px; }
-}
-@media (max-width: 600px) {
-  .nav-main { padding: 0.75rem 1rem; gap: 0.5rem; }
-  .product-wrap { padding: 1rem; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-grid .full { grid-column: 1; }
-  .usp-row { grid-template-columns: repeat(3,1fr); gap: 0.4rem; }
-  .action-btns { grid-template-columns: 1fr 1fr 44px; }
-  .confirm-actions { flex-direction: column; }
-}
+  .cat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 16px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .cat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px var(--shadow);
+    border-color: var(--saffron-light);
+  }
+  .cat-card.active { background: var(--saffron); border-color: var(--saffron); }
+  .cat-card.active .cat-name { color: #fff; }
+  .cat-card.active .cat-count { color: rgba(255,255,255,0.7); }
+
+  .cat-emoji { font-size: 36px; margin-bottom: 12px; display: block; }
+  .cat-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .cat-count { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+  /* ─── PRODUCTS ─── */
+  .products-section {
+    padding: 80px 5vw;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-tab {
+    padding: 8px 22px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-tab:hover { border-color: var(--saffron); color: var(--saffron); }
+  .filter-tab.active { background: var(--dark-brown); border-color: var(--dark-brown); color: #fff; }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px var(--shadow);
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .badge-new { background: var(--dark-brown); color: #fff; }
+  .badge-best { background: var(--saffron); color: #fff; }
+  .badge-sale { background: var(--deep-red); color: #fff; }
+
+  .wishlist-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 2;
+  }
+  .wishlist-btn:hover, .wishlist-btn.active { background: #fff; transform: scale(1.1); }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 110%, rgba(232,118,10,0.06), transparent 60%);
+  }
+
+  .product-info { padding: 16px 18px 20px; }
+
+  .product-origin {
+    font-size: 10px;
+    color: var(--saffron);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark-brown);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .product-brand {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+
+  .product-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .price-block { }
+  .price-original { font-size: 11px; color: var(--text-light); text-decoration: line-through; }
+  .price-current {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark-brown);
+    font-family: 'Playfair Display', serif;
+  }
+  .price-current span { font-size: 13px; font-weight: 600; }
+
+  .add-btn {
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .add-btn:hover { background: var(--dark-brown); transform: scale(1.04); }
+  .add-btn.added { background: #2A7A2A; }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--cream);
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .qty-btn {
+    width: 32px;
+    height: 34px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty-btn:hover { background: rgba(232,118,10,0.1); color: var(--saffron); }
+  .qty-num {
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+    color: var(--dark-brown);
+  }
+
+  /* ─── BANNER ─── */
+  .promo-banner {
+    margin: 0 5vw 80px;
+    background: linear-gradient(135deg, var(--dark-brown) 0%, var(--medium-brown) 50%, #3D1F0A 100%);
+    border-radius: 32px;
+    padding: 60px 10%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .promo-banner::before {
+    content: '✦';
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 180px;
+    color: rgba(255,255,255,0.03);
+    font-family: serif;
+  }
+  .promo-banner::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(232,118,10,0.15), transparent 60%);
+    border-radius: 50%;
+  }
+  .promo-text { position: relative; z-index: 1; }
+  .promo-text .eyebrow { color: var(--gold-light); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; display: block; }
+  .promo-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; color: #fff; line-height: 1.2; }
+  .promo-text h2 em { font-style: italic; color: var(--gold-light); }
+  .promo-text p { color: rgba(255,255,255,0.65); margin-top: 12px; font-size: 15px; line-height: 1.6; }
+  .promo-cta { position: relative; z-index: 1; text-align: center; }
+  .discount-circle {
+    width: 130px;
+    height: 130px;
+    border: 2px dashed var(--gold-light);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .discount-circle .pct { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 900; color: var(--gold-light); line-height: 1; }
+  .discount-circle .off { font-size: 13px; color: rgba(255,255,255,0.7); letter-spacing: 1px; }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--dark-brown);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: scale(1.04); }
+
+  /* ─── BRANDS ─── */
+  .brands-section {
+    padding: 80px 5vw;
+    background: var(--cream);
+  }
+  .brands-track-wrapper { overflow: hidden; position: relative; }
+  .brands-track-wrapper::before, .brands-track-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    z-index: 2;
+  }
+  .brands-track-wrapper::before { left: 0; background: linear-gradient(to right, var(--cream), transparent); }
+  .brands-track-wrapper::after { right: 0; background: linear-gradient(to left, var(--cream), transparent); }
+  .brands-track {
+    display: flex;
+    gap: 32px;
+    animation: scroll 22s linear infinite;
+    width: max-content;
+  }
+  .brands-track:hover { animation-play-state: paused; }
+  .brand-pill {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    white-space: nowrap;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .brand-pill:hover { border-color: var(--saffron); color: var(--saffron); }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials { padding: 80px 5vw; }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .testi-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px;
+    position: relative;
+  }
+  .testi-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    color: var(--saffron);
+    opacity: 0.25;
+    position: absolute;
+    top: 10px;
+    left: 24px;
+    line-height: 1;
+  }
+  .stars { color: var(--saffron); font-size: 14px; margin-bottom: 16px; }
+  .testi-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 42px;
+    height: 42px;
+    background: var(--saffron);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .testi-author h4 { font-size: 14px; font-weight: 600; color: var(--dark-brown); }
+  .testi-author p { font-size: 12px; color: var(--text-light); }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,118,10,0.06), transparent 70%), var(--cream);
+    padding: 80px 5vw;
+    text-align: center;
+  }
+  .newsletter h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 900; color: var(--dark-brown); }
+  .newsletter h2 em { color: var(--saffron); font-style: italic; }
+  .newsletter p { font-size: 15px; color: var(--text-mid); margin-top: 12px; margin-bottom: 32px; }
+  .email-form { display: flex; gap: 12px; max-width: 460px; margin: 0 auto; }
+  .email-input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .email-input:focus { border-color: var(--saffron); }
+  .email-input::placeholder { color: var(--text-light); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark-brown);
+    color: rgba(255,255,255,0.7);
+    padding: 64px 5vw 32px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .footer-logo span { color: var(--saffron); }
+  .footer-desc { font-size: 13.5px; line-height: 1.7; margin-bottom: 24px; }
+  .social-links { display: flex; gap: 12px; }
+  .social-link {
+    width: 38px;
+    height: 38px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgba(255,255,255,0.7);
+  }
+  .social-link:hover { background: var(--saffron); color: #fff; }
+  .footer-col h4 { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13.5px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--saffron-light); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-bottom p { font-size: 12.5px; }
+  .footer-bottom .made { color: var(--gold-light); font-weight: 600; }
+
+  /* ─── CART DRAWER ─── */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(2px);
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(420px, 100vw);
+    background: var(--warm-white);
+    z-index: 2001;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+
+  .cart-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cart-header h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--dark-brown); }
+  .close-cart {
+    width: 36px;
+    height: 36px;
+    background: var(--cream);
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    color: var(--text-dark);
+  }
+  .close-cart:hover { background: var(--border); }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-item-img {
+    width: 70px;
+    height: 70px;
+    background: var(--cream);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 14px; font-weight: 600; color: var(--dark-brown); line-height: 1.3; margin-bottom: 3px; }
+  .cart-item-brand { font-size: 12px; color: var(--text-light); margin-bottom: 8px; }
+  .cart-item-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .cart-item-price { font-size: 15px; font-weight: 700; color: var(--saffron); font-family: 'Playfair Display', serif; }
+  .remove-item { background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 18px; padding: 2px 6px; transition: color 0.2s; }
+  .remove-item:hover { color: var(--deep-red); }
+
+  .cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--text-light);
+    text-align: center;
+  }
+  .cart-empty .em { font-size: 56px; }
+  .cart-empty h4 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--text-mid); }
+  .cart-empty p { font-size: 14px; }
+
+  .cart-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: #fff;
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .cart-total span { font-size: 13px; color: var(--text-mid); }
+  .cart-total strong { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--dark-brown); }
+  .cart-savings { font-size: 12px; color: #2A7A2A; font-weight: 600; margin-bottom: 16px; }
+  .checkout-btn {
+    width: 100%;
+    background: var(--dark-brown);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .checkout-btn:hover { background: var(--saffron); }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--dark-brown);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 3000;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .products-grid { grid-template-columns: repeat(3, 1fr); }
+    .cat-grid { grid-template-columns: repeat(5, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero { grid-template-columns: 1fr; min-height: auto; padding: 48px 5vw 60px; }
+    .hero-image { display: none; }
+    .hero h1 { font-size: clamp(36px, 8vw, 56px); }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .cat-grid { grid-template-columns: repeat(3, 1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+    .promo-banner { grid-template-columns: 1fr; text-align: center; }
+    .promo-cta { display: flex; flex-direction: column; align-items: center; }
+    .email-form { flex-direction: column; }
+  }
+
+  @media (max-width: 580px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .product-info { padding: 12px 14px 16px; }
+    .price-current { font-size: 17px; }
+    .add-btn { padding: 9px 14px; font-size: 11.5px; }
+    .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .cat-card { padding: 18px 8px 14px; border-radius: 14px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .trust-bar { flex-direction: column; gap: 20px; align-items: flex-start; padding: 24px 5vw; }
+    .hero-stats { gap: 20px; }
+    .promo-banner { padding: 40px 7%; margin: 0 4vw 60px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  NAVBAR (shared across all pages)       -->
-<!-- ═══════════════════════════════════════ -->
-<div class="navbar">
-  <div class="nav-top">🚚 FREE delivery on orders above ₹499 &nbsp;|&nbsp; Use code WELCOME10 for 10% off</div>
-  <div class="nav-main">
-    <div class="nav-logo">Delicious<span>Kart</span></div>
-    <div class="nav-search">
-      <input type="text" placeholder="Search for sweets, snacks, brands..." id="searchInput" oninput="showSuggestions(this.value)">
-      <div class="search-suggestions" id="searchSugg">
-        <div class="sugg-item"><span class="sugg-icon">🔍</span> Gulab Jamun</div>
-        <div class="sugg-item"><span class="sugg-icon">🔍</span> Kaju Katli – Haldiram's</div>
-        <div class="sugg-item"><span class="sugg-icon">🔍</span> Rasgulla – K.C.Das</div>
-        <div class="sugg-item"><span class="sugg-icon">🔍</span> Dry Fruits Gift Box</div>
-        <div class="sugg-item"><span class="sugg-icon">🔥</span> Bestsellers in Sweets</div>
-      </div>
-      <button>🔍</button>
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  🎉 Free shipping on orders above ₹499 <span>|</span> Use code <strong>TASTE20</strong> for 20% off <span>|</span> Pan-India Delivery 🇮🇳
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="logo" href="#"><span>D</span>elicious<span>K</span>art</a>
+  <ul class="nav-links">
+    <li><a onclick="scrollTo('categories')">Shop by Category</a></li>
+    <li><a onclick="scrollTo('products')">New Arrivals</a></li>
+    <li><a onclick="scrollTo('brands')">Brands</a></li>
+    <li><a onclick="scrollTo('about')">Our Story</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="search-btn" title="Search">🔍</button>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" onclick="toggleMenu()">✕</button>
+  <a onclick="scrollTo('categories'); toggleMenu()">Categories</a>
+  <a onclick="scrollTo('products'); toggleMenu()">New Arrivals</a>
+  <a onclick="scrollTo('brands'); toggleMenu()">Brands</a>
+  <a onclick="scrollTo('about'); toggleMenu()">Our Story</a>
+  <a onclick="openCart(); toggleMenu()">🛒 My Cart</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">✦ #MadeInIndia — Pan-India Delivery</div>
+    <h1>Finest <em>Legendary</em><br>Flavors,<br>Handpicked For You!</h1>
+    <p class="hero-desc">From the iconic Rasogolla of Kolkata to the timeless Soan Papdi of Delhi — we bring India's most beloved regional tastes straight to your doorstep.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" onclick="scrollTo('products')">Explore Collection</a>
+      <a class="btn-outline" onclick="scrollTo('categories')">Shop by Category</a>
     </div>
-    <div class="nav-actions">
-      <div class="nav-btn" onclick="showWishlist()">
-        <span class="icon">♡</span>
-        Wishlist
-      </div>
-      <div class="nav-btn" onclick="goToCart()">
-        <span class="icon">🛒</span>
-        Cart
-        <span class="cart-badge" id="cartBadge">2</span>
-      </div>
-      <div class="nav-btn" onclick="showToast('Sign In / Sign Up coming soon!', 'info')">
-        <span class="icon">👤</span>
-        Account
-      </div>
+    <div class="hero-stats">
+      <div class="stat"><h3>500+</h3><p>Artisan Brands</p></div>
+      <div class="stat"><h3>2000+</h3><p>Products</p></div>
+      <div class="stat"><h3>50k+</h3><p>Happy Foodies</p></div>
     </div>
   </div>
-  <div class="nav-cats">
-    <div class="nav-cats-inner">
-      <span class="cat-link active">All</span>
-      <span class="cat-link">Sweets & Mithai</span>
-      <span class="cat-link">Namkeens</span>
-      <span class="cat-link">Chocolates</span>
-      <span class="cat-link">Dry Fruits</span>
-      <span class="cat-link">Beverages</span>
-      <span class="cat-link">Cooking Essentials</span>
-      <span class="cat-link">Gift Hampers</span>
-      <span class="cat-link">New Arrivals</span>
+  <div class="hero-image">
+    <div class="hero-circle">
+      <div class="hero-emoji-grid">
+        <div class="emoji-card"><span class="em">🍬</span><span>Sweets</span></div>
+        <div class="emoji-card"><span class="em">🫙</span><span>Pickles</span></div>
+        <div class="emoji-card"><span class="em">🍫</span><span>Chocolates</span></div>
+        <div class="emoji-card"><span class="em">🥜</span><span>Dry Fruits</span></div>
+        <div class="emoji-card"><span class="em">🍵</span><span>Teas</span></div>
+        <div class="emoji-card"><span class="em">🌶️</span><span>Namkeens</span></div>
+      </div>
     </div>
+    <div class="floating-badge b1">🚚 Delivered Fresh Daily</div>
+    <div class="floating-badge b2">⭐ 4.9 Rated</div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-icon">🚚</div><div><h4>Free Delivery</h4><p>On orders above ₹499</p></div></div>
+  <div class="trust-item"><div class="trust-icon">🔄</div><div><h4>Easy Returns</h4><p>7-day hassle-free returns</p></div></div>
+  <div class="trust-item"><div class="trust-icon">🏆</div><div><h4>100% Authentic</h4><p>Direct from regional brands</p></div></div>
+  <div class="trust-item"><div class="trust-icon">🔒</div><div><h4>Secure Payments</h4><p>UPI, Cards, COD accepted</p></div></div>
+  <div class="trust-item"><div class="trust-icon">🌡️</div><div><h4>Fresh Packaging</h4><p>Temperature-controlled storage</p></div></div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="section-header">
+    <span class="eyebrow">Explore by Taste & Type</span>
+    <h2>What Are You<br><em>Craving Today?</em></h2>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card active" onclick="filterProducts('all')">
+      <span class="cat-emoji">🍽️</span>
+      <div class="cat-name">All Products</div>
+      <div class="cat-count">2000+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('sweets')">
+      <span class="cat-emoji">🍬</span>
+      <div class="cat-name">Sweets & Mithai</div>
+      <div class="cat-count">340+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('snacks')">
+      <span class="cat-emoji">🌶️</span>
+      <div class="cat-name">Namkeens & Snacks</div>
+      <div class="cat-count">280+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('beverages')">
+      <span class="cat-emoji">🍵</span>
+      <div class="cat-name">Beverages & Teas</div>
+      <div class="cat-count">150+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('nuts')">
+      <span class="cat-emoji">🥜</span>
+      <div class="cat-name">Dry Fruits & Nuts</div>
+      <div class="cat-count">190+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('pickles')">
+      <span class="cat-emoji">🫙</span>
+      <div class="cat-name">Pickles & Preserves</div>
+      <div class="cat-count">120+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('chocolate')">
+      <span class="cat-emoji">🍫</span>
+      <div class="cat-name">Chocolates & Treats</div>
+      <div class="cat-count">200+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('cooking')">
+      <span class="cat-emoji">🧄</span>
+      <div class="cat-name">Cooking Essentials</div>
+      <div class="cat-count">160+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('instant')">
+      <span class="cat-emoji">🍜</span>
+      <div class="cat-name">Instant & Ready Meals</div>
+      <div class="cat-count">95+ items</div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('gifts')">
+      <span class="cat-emoji">🎁</span>
+      <div class="cat-name">Gift Hampers</div>
+      <div class="cat-count">60+ items</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="section-header">
+    <span class="eyebrow">Curated with love</span>
+    <h2>Best Sellers &<br><em>New Arrivals</em></h2>
+    <p>Iconic regional foods from India's most celebrated local brands — handpicked, freshly packed & delivered to you.</p>
+  </div>
+
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-tab" onclick="setFilter(this,'sweets')">🍬 Sweets</button>
+    <button class="filter-tab" onclick="setFilter(this,'snacks')">🌶️ Snacks</button>
+    <button class="filter-tab" onclick="setFilter(this,'beverages')">🍵 Beverages</button>
+    <button class="filter-tab" onclick="setFilter(this,'nuts')">🥜 Dry Fruits</button>
+    <button class="filter-tab" onclick="setFilter(this,'chocolate')">🍫 Chocolates</button>
+  </div>
+
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner" id="about">
+  <div class="promo-text">
+    <span class="eyebrow">✦ Limited Time Offer</span>
+    <h2>Taste the <em>Heritage</em><br>of India's Finest Sweets</h2>
+    <p>Curated festive hampers featuring legendary mithai from iconic shops across India — perfect for gifting and celebrating.</p>
+    <br>
+    <button class="btn-gold" onclick="scrollTo('products')">Explore Festive Hampers →</button>
+  </div>
+  <div class="promo-cta">
+    <div class="discount-circle">
+      <span class="pct">20%</span>
+      <span class="off">OFF</span>
+    </div>
+    <p style="color:rgba(255,255,255,0.6); font-size:12px; margin-bottom:8px;">Use code at checkout</p>
+    <div style="background:rgba(255,255,255,0.12); border:1px dashed var(--gold-light); border-radius:8px; padding:8px 22px; color:var(--gold-light); font-weight:700; letter-spacing:2px; font-size:14px;">TASTE20</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  PAGE 1: PRODUCT PAGE                   -->
-<!-- ═══════════════════════════════════════ -->
-<div id="page-product" class="page active">
-  <div class="product-wrap">
-    <div class="breadcrumb">Home &rsaquo; Traditional Sweets &rsaquo; <span>K.C.Das Rasgullas – 1kg</span></div>
+<!-- BRANDS -->
+<section class="brands-section" id="brands">
+  <div class="section-header">
+    <span class="eyebrow">Our Brand Partners</span>
+    <h2>500+ <em>Legendary</em> Brands<br>Under One Roof</h2>
+  </div>
+  <div class="brands-track-wrapper">
+    <div class="brands-track" id="brandsTrack"></div>
+  </div>
+</section>
 
-    <div class="product-grid">
-      <!-- IMAGE COLUMN -->
-      <div class="product-images">
-        <div class="main-img-wrap">
-          <div style="width:100%;height:100%;background:linear-gradient(145deg,#fff5e6,#ffe4c4);display:flex;align-items:center;justify-content:center;font-size:8rem;">🍮</div>
-          <div class="product-badge">
-            <span class="badge badge-bestseller">⭐ Bestseller</span>
-            <span class="badge badge-off">22% OFF</span>
-          </div>
-        </div>
-        <div class="thumb-row">
-          <div class="thumb active"><div style="width:100%;height:100%;background:#ffe4c4;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🍮</div></div>
-          <div class="thumb"><div style="width:100%;height:100%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📦</div></div>
-          <div class="thumb"><div style="width:100%;height:100%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">✅</div></div>
-          <div class="thumb"><div style="width:100%;height:100%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🏷️</div></div>
-        </div>
-      </div>
-
-      <!-- INFO COLUMN -->
-      <div class="product-info">
-        <div class="prod-brand">K.C.Das · Kolkata</div>
-        <h1 class="prod-title">Original Kolkata Rasgullas in Syrup</h1>
-        <div class="prod-rating">
-          <span class="stars">★★★★★</span>
-          <span style="font-weight:700;font-size:0.9rem;">4.8</span>
-          <span class="rating-count">(2,340 reviews)</span>
-        </div>
-
-        <!-- WEIGHT + PRICE -->
-        <div class="weight-price-block">
-          <div class="weight-row">
-            <span class="weight-label">Weight:</span>
-            <span class="weight-option active" onclick="selectWeight(this,'500g','₹249','₹319')">500g</span>
-            <span class="weight-option" onclick="selectWeight(this,'1 kg','₹449','₹579')">1 kg</span>
-            <span class="weight-option" onclick="selectWeight(this,'2 kg','₹849','₹1099')">2 kg</span>
-          </div>
-          <div class="price-row">
-            <span class="price-main" id="priceMain">₹249</span>
-            <span class="price-mrp" id="priceMrp">₹319</span>
-            <span class="price-save" id="priceSave">Save ₹70</span>
-          </div>
-          <div class="price-per-unit" id="pricePerUnit">₹4.98 per piece · Approx. 50 pieces per 500g</div>
-        </div>
-
-        <!-- QTY -->
-        <div class="qty-row">
-          <span class="qty-label">Quantity:</span>
-          <div class="qty-ctrl">
-            <button class="qty-btn" onclick="changeQty(-1)">−</button>
-            <span class="qty-num" id="qtyNum">1</span>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
-          </div>
-          <span class="qty-unit">Packs</span>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="action-btns">
-          <button class="btn-cart" onclick="addToCart()">🛒 Add to Cart</button>
-          <button class="btn-buynow" onclick="buyNow()">⚡ Buy Now</button>
-          <button class="btn-wishlist" id="wishBtn" onclick="toggleWishlist()">♡</button>
-        </div>
-
-        <!-- USPs -->
-        <div class="usp-row">
-          <div class="usp-card">
-            <div class="usp-icon">🚚</div>
-            <div class="usp-text">Free Delivery above ₹499</div>
-          </div>
-          <div class="usp-card">
-            <div class="usp-icon">✅</div>
-            <div class="usp-text">100% Authentic Brand</div>
-          </div>
-          <div class="usp-card">
-            <div class="usp-icon">↩️</div>
-            <div class="usp-text">Easy Returns & Refunds</div>
-          </div>
-        </div>
-
-        <!-- KEY FEATURES -->
-        <div class="features-block">
-          <div class="features-title">🏷️ Key Features</div>
-          <div class="feature-tags">
-            <span class="ftag">No Artificial Colors</span>
-            <span class="ftag">No Preservatives</span>
-            <span class="ftag">Pure Chhena</span>
-            <span class="ftag">Traditional Recipe</span>
-            <span class="ftag">Shelf Life: 15 Days</span>
-            <span class="ftag">FSSAI Certified</span>
-          </div>
-        </div>
-
-        <!-- DESCRIPTION -->
-        <div class="desc-block">
-          <div class="desc-title">About this product</div>
-          <p>K.C.Das Rasgullas are made using the original 1868 recipe from Kolkata — spongy chenna balls soaked in light sugar syrup. Every piece is crafted from fresh, locally sourced milk. A legendary Indian mithai, now delivered to your doorstep.</p>
-        </div>
-
-        <!-- BRAND DISCOUNTS -->
-        <div class="discount-block">
-          <div class="discount-title">🏷️ Brand Discount Ladder</div>
-          <table class="discount-table">
-            <thead>
-              <tr><th>Qty</th><th>Discount</th><th>You Save</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1 pack</td><td>22%</td><td class="disc-val">₹70</td></tr>
-              <tr><td>2 packs</td><td>25%</td><td class="disc-val">₹160</td></tr>
-              <tr><td>3+ packs</td><td>30%</td><td class="disc-val">₹288+</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- PINCODE CHECK -->
-        <div class="pincode-block">
-          <div class="features-title" style="margin-bottom:0.6rem;">📍 Check Delivery</div>
-          <div class="pincode-row">
-            <input type="text" placeholder="Enter pincode" maxlength="6" id="pincodeInput" oninput="checkPincode(this.value)">
-            <button class="btn-check" onclick="verifyPincode()">Check</button>
-          </div>
-          <div class="delivery-result" id="deliveryResult">✅ Delivery available by <strong>Tomorrow, 3–6 PM</strong> · Standard: Free | Express: ₹49</div>
-        </div>
-
-      </div>
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-header">
+    <span class="eyebrow">Customer Love</span>
+    <h2>50,000+ Happy<br><em>Food Lovers</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Finally found authentic Karachi Bakery Fruit Biscuits delivered to my doorstep in Bengaluru! This brought back so many childhood memories. The packaging was perfect too.</p>
+      <div class="testi-author"><div class="testi-avatar">P</div><div><h4>Priya Sharma</h4><p>Bengaluru 📍</p></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Ordered K.C. Das Rosogolla and Bikanervala's Soan Papdi for Diwali gifting. Both arrived super fresh and my family loved them. Will definitely order again!</p>
+      <div class="testi-author"><div class="testi-avatar">R</div><div><h4>Rahul Mehta</h4><p>Mumbai 📍</p></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The curated hamper I ordered for my parents' anniversary was beautiful and tasted even better. DeliciousKart truly understands India's love for regional food.</p>
+      <div class="testi-author"><div class="testi-avatar">A</div><div><h4>Ananya Reddy</h4><p>Hyderabad 📍</p></div></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  PAGE 2: CART                           -->
-<!-- ═══════════════════════════════════════ -->
-<div id="page-cart" class="page">
-  <div class="cart-wrap">
-    <div class="cart-main">
-      <div class="cart-header">
-        <div class="section-title" style="margin-bottom:0">🛒 Your Cart</div>
-        <span class="cart-count">2 items</span>
-      </div>
-
-      <!-- CART ITEM 1 -->
-      <div class="cart-item">
-        <div class="cart-item-img"><div style="width:100%;height:100%;background:linear-gradient(145deg,#ffe4c4,#fff5e6);display:flex;align-items:center;justify-content:center;font-size:2rem;">🍮</div></div>
-        <div>
-          <div class="cart-item-name">K.C.Das Rasgullas in Syrup</div>
-          <div class="cart-item-variant">500g &nbsp;·&nbsp; 50 pieces</div>
-          <div class="cart-item-qty">
-            <button class="cq-btn" onclick="cartQty(this,-1)">−</button>
-            <span class="cq-num">1</span>
-            <button class="cq-btn" onclick="cartQty(this,1)">+</button>
-            <span style="font-size:0.75rem;color:var(--dk-mid);">Pack</span>
-          </div>
-          <div class="cart-item-remove" onclick="this.closest('.cart-item').style.display='none';showToast('Item removed','info')">Remove</div>
-        </div>
-        <div class="cart-item-price">
-          <div class="ci-price">₹249</div>
-          <div class="ci-mrp">₹319</div>
-          <div class="ci-save">Save ₹70</div>
-        </div>
-      </div>
-
-      <!-- CART ITEM 2 -->
-      <div class="cart-item">
-        <div class="cart-item-img"><div style="width:100%;height:100%;background:linear-gradient(145deg,#fef3c7,#fffbeb);display:flex;align-items:center;justify-content:center;font-size:2rem;">🥜</div></div>
-        <div>
-          <div class="cart-item-name">Haldiram's Kaju Mixture</div>
-          <div class="cart-item-variant">400g &nbsp;·&nbsp; 1 pack</div>
-          <div class="cart-item-qty">
-            <button class="cq-btn" onclick="cartQty(this,-1)">−</button>
-            <span class="cq-num">1</span>
-            <button class="cq-btn" onclick="cartQty(this,1)">+</button>
-            <span style="font-size:0.75rem;color:var(--dk-mid);">Pack</span>
-          </div>
-          <div class="cart-item-remove" onclick="this.closest('.cart-item').style.display='none';showToast('Item removed','info')">Remove</div>
-        </div>
-        <div class="cart-item-price">
-          <div class="ci-price">₹199</div>
-          <div class="ci-mrp">₹249</div>
-          <div class="ci-save">Save ₹50</div>
-        </div>
-      </div>
-
-      <!-- COUPON -->
-      <div class="coupon-block">
-        <div class="features-title" style="margin-bottom:0.6rem;">🏷️ Apply Coupon</div>
-        <div class="coupon-row">
-          <input type="text" placeholder="Enter coupon code" id="couponInput">
-          <button class="btn-apply" onclick="applyCoupon()">Apply</button>
-        </div>
-      </div>
-
-      <!-- BUY AGAIN -->
-      <div class="buy-again-section">
-        <div class="section-title" style="font-size:1rem;">🔄 Buy Again</div>
-        <div class="products-row">
-          <div class="prod-mini-card">
-            <div class="prod-mini-img"><div style="width:100%;height:100%;background:#fce7f3;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍬</div></div>
-            <div class="prod-mini-body">
-              <div class="prod-mini-name">Bikanervala Soan Papdi</div>
-              <div class="prod-mini-price">₹180 <span class="prod-mini-mrp">₹220</span></div>
-            </div>
-            <button class="btn-mini-add" onclick="showToast('Added to cart ✓','success')">+ Add</button>
-          </div>
-          <div class="prod-mini-card">
-            <div class="prod-mini-img"><div style="width:100%;height:100%;background:#e0f2fe;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍫</div></div>
-            <div class="prod-mini-body">
-              <div class="prod-mini-name">Karachi Bakery Fruit Biscuits</div>
-              <div class="prod-mini-price">₹260 <span class="prod-mini-mrp">₹320</span></div>
-            </div>
-            <button class="btn-mini-add" onclick="showToast('Added to cart ✓','success')">+ Add</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- SIMILAR PRODUCTS -->
-      <div class="buy-again-section">
-        <div class="section-title" style="font-size:1rem;">👀 You May Also Like</div>
-        <div class="products-row">
-          <div class="prod-mini-card">
-            <div class="prod-mini-img">
-              <div class="product-badge" style="position:absolute;z-index:1;top:4px;left:4px;"><span class="badge badge-new" style="font-size:0.55rem;padding:2px 6px;">NEW</span></div>
-              <div style="width:100%;height:100%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎁</div>
-            </div>
-            <div class="prod-mini-body">
-              <div class="prod-mini-name">Diwali Gift Hamper</div>
-              <div class="prod-mini-price">₹999 <span class="prod-mini-mrp">₹1299</span></div>
-            </div>
-            <button class="btn-mini-add" onclick="showToast('Added to cart ✓','success')">+ Add</button>
-          </div>
-          <div class="prod-mini-card">
-            <div class="prod-mini-img"><div style="width:100%;height:100%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍩</div></div>
-            <div class="prod-mini-body">
-              <div class="prod-mini-name">K.C.Das Cham Cham – 500g</div>
-              <div class="prod-mini-price">₹229 <span class="prod-mini-mrp">₹289</span></div>
-            </div>
-            <button class="btn-mini-add" onclick="showToast('Added to cart ✓','success')">+ Add</button>
-          </div>
-          <div class="prod-mini-card">
-            <div class="prod-mini-img"><div style="width:100%;height:100%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🫙</div></div>
-            <div class="prod-mini-body">
-              <div class="prod-mini-name">Bikaji Bhujia – 400g</div>
-              <div class="prod-mini-price">₹149 <span class="prod-mini-mrp">₹185</span></div>
-            </div>
-            <button class="btn-mini-add" onclick="showToast('Added to cart ✓','success')">+ Add</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ORDER SUMMARY -->
-    <div class="order-summary">
-      <div class="summary-title">Order Summary</div>
-      <div class="summary-row"><span>Subtotal (2 items)</span><span>₹448</span></div>
-      <div class="summary-row discount"><span>Discount (22%)</span><span>−₹120</span></div>
-      <div class="summary-row discount"><span>Coupon (WELCOME10)</span><span id="couponDiscount">−₹0</span></div>
-      <div class="summary-row"><span>Delivery</span><span style="color:var(--dk-green);font-weight:700;">FREE</span></div>
-      <div class="summary-row"><span>Taxes (GST 5%)</span><span>₹16</span></div>
-      <div class="summary-row total"><span>Total Payable</span><span>₹344</span></div>
-      <div class="savings-banner">🎉 You save ₹120 on this order!</div>
-      <div class="trust-badges">
-        <span class="trust-badge">🔒 SSL Secure</span>
-        <span class="trust-badge">✅ Safe Pay</span>
-        <span class="trust-badge">🛡️ Guaranteed</span>
-      </div>
-      <button class="btn-checkout" onclick="goToCheckout()">Proceed to Checkout →</button>
-    </div>
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="section-header">
+    <h2>Get <em>Exclusive</em> Deals<br>& Food Stories</h2>
+    <p>Join 50,000+ food lovers getting weekly taste discoveries, regional stories & special offers.</p>
   </div>
-</div>
-
-<!-- ═══════════════════════════════════════ -->
-<!--  PAGE 3: CHECKOUT                       -->
-<!-- ═══════════════════════════════════════ -->
-<div id="page-checkout" class="page">
-  <div class="checkout-wrap">
-    <!-- PROGRESS -->
-    <div class="progress-bar">
-      <div class="prog-step">
-        <div class="prog-circle done" id="p1">✓</div>
-        <div class="prog-label done" id="pl1">Cart</div>
-      </div>
-      <div class="prog-line done" id="line1"></div>
-      <div class="prog-step">
-        <div class="prog-circle active" id="p2">2</div>
-        <div class="prog-label active" id="pl2">Shipping</div>
-      </div>
-      <div class="prog-line" id="line2"></div>
-      <div class="prog-step">
-        <div class="prog-circle" id="p3">3</div>
-        <div class="prog-label" id="pl3">Payment</div>
-      </div>
-      <div class="prog-line" id="line3"></div>
-      <div class="prog-step">
-        <div class="prog-circle" id="p4">4</div>
-        <div class="prog-label" id="pl4">Confirm</div>
-      </div>
-    </div>
-
-    <div class="checkout-grid">
-      <div>
-
-        <!-- STEP 2: SHIPPING -->
-        <div class="checkout-step active" id="step-shipping">
-
-          <!-- LOGIN / GUEST CHOICE -->
-          <div class="step-card" id="authBlock">
-            <div class="step-card-title"><span>👤</span> Sign In or Continue as Guest</div>
-            <div class="social-login">
-              <button class="btn-social" onclick="showToast('Google Sign-In coming soon','info')">🔵 Continue with Google</button>
-              <button class="btn-social" onclick="showToast('Facebook Sign-In coming soon','info')">🔷 Continue with Facebook</button>
-            </div>
-            <div class="or-divider"><span>or sign in with email</span></div>
-            <div class="form-grid single" style="margin-bottom:0.6rem;">
-              <div class="form-group">
-                <label>Email / Phone</label>
-                <input type="text" placeholder="Enter your email or phone number">
-              </div>
-              <div class="form-group">
-                <label>Password</label>
-                <input type="password" placeholder="Enter password">
-              </div>
-            </div>
-            <button class="step-cta primary" onclick="useLoggedIn()" style="margin-top:0.75rem;">Sign In & Continue</button>
-            <div class="or-divider" style="margin:0.75rem 0;"><span>OR</span></div>
-            <button class="btn-guest" onclick="useGuest()">Continue as Guest →</button>
-          </div>
-
-          <!-- SAVED ADDRESS (logged-in) -->
-          <div class="step-card" id="savedAddrBlock" style="display:none;">
-            <div class="step-card-title"><span>📍</span> Shipping Address</div>
-            <div class="addr-card selected">
-              <input type="radio" class="addr-radio" checked>
-              <div>
-                <div class="addr-name">Priya Sharma &nbsp;<span class="addr-tag">Home</span></div>
-                <div class="addr-line">12, Rose Garden Colony, Banjara Hills</div>
-                <div class="addr-line">Hyderabad, Telangana – 500034</div>
-                <div class="addr-line" style="margin-top:0.25rem;">📞 +91 98765 43210</div>
-              </div>
-            </div>
-            <div class="addr-card" onclick="this.classList.toggle('selected')">
-              <input type="radio" class="addr-radio">
-              <div>
-                <div class="addr-name">Office &nbsp;<span class="addr-tag">Work</span></div>
-                <div class="addr-line">Plot 45, Cyber Towers, Madhapur</div>
-                <div class="addr-line">Hyderabad, Telangana – 500081</div>
-              </div>
-            </div>
-
-            <div style="margin-top:0.5rem;">
-              <div class="features-title">🎁 Order for Someone Else?</div>
-              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;margin-top:0.4rem;cursor:pointer;">
-                <input type="checkbox" style="accent-color:var(--dk-orange);"> Send as gift with gift packing (₹29)
-              </label>
-            </div>
-          </div>
-
-          <!-- GUEST FORM -->
-          <div class="step-card" id="guestFormBlock" style="display:none;">
-            <div class="step-card-title"><span>📍</span> Shipping Details</div>
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Full Name <span class="req">*</span></label>
-                <input type="text" placeholder="Your full name">
-              </div>
-              <div class="form-group">
-                <label>Mobile Number <span class="req">*</span></label>
-                <input type="tel" placeholder="+91 XXXXX XXXXX">
-              </div>
-              <div class="form-group full">
-                <label>Email ID <span class="req">*</span></label>
-                <input type="email" placeholder="yourname@email.com">
-              </div>
-              <div class="form-group full">
-                <label>Address Line 1 <span class="req">*</span></label>
-                <input type="text" placeholder="Flat/House No, Street, Locality">
-              </div>
-              <div class="form-group full">
-                <label>Address Line 2</label>
-                <input type="text" placeholder="Landmark (optional)">
-              </div>
-              <div class="form-group">
-                <label>Pincode <span class="req">*</span></label>
-                <input type="text" maxlength="6" placeholder="6-digit pincode" oninput="autoDetectState(this.value)">
-              </div>
-              <div class="form-group">
-                <label>City <span class="req">*</span></label>
-                <input type="text" placeholder="City">
-              </div>
-              <div class="form-group">
-                <label>State <span class="req">*</span></label>
-                <input type="text" placeholder="Auto-detected from pincode" id="stateField">
-              </div>
-            </div>
-          </div>
-
-          <!-- DELIVERY OPTIONS -->
-          <div class="step-card" id="deliveryBlock" style="display:none;">
-            <div class="step-card-title"><span>🚚</span> Choose Delivery Method</div>
-            <div class="delivery-option selected" onclick="selectDelivery(this)">
-              <div class="del-left">
-                <div class="del-icon">📦</div>
-                <div>
-                  <div class="del-name">Standard Delivery</div>
-                  <div class="del-eta">Arrives by Thursday, 3 Jul · 3–6 PM</div>
-                </div>
-              </div>
-              <div class="del-price free">FREE</div>
-            </div>
-            <div class="delivery-option" onclick="selectDelivery(this)">
-              <div class="del-left">
-                <div class="del-icon">⚡</div>
-                <div>
-                  <div class="del-name">Express Delivery</div>
-                  <div class="del-eta">Arrives Tomorrow · Before 12 PM</div>
-                </div>
-              </div>
-              <div class="del-price">₹49</div>
-            </div>
-          </div>
-
-          <button class="step-cta primary" id="shippingCta" style="display:none;" onclick="goToPayment()">Continue to Payment →</button>
-          <div class="back-link" onclick="goToCart()">← Back to Cart</div>
-        </div>
-
-        <!-- STEP 3: PAYMENT -->
-        <div class="checkout-step" id="step-payment">
-          <div class="step-card">
-            <div class="step-card-title"><span>💳</span> Payment Options</div>
-
-            <!-- LOYALTY POINTS -->
-            <div class="loyalty-block">
-              <div class="loyalty-info">
-                <div class="loyalty-title">🪙 Your Loyalty Points</div>
-                <div class="loyalty-pts">You have <strong>240 points</strong> (worth ₹24) · Apply full or partial</div>
-              </div>
-              <div class="toggle-switch" id="loyaltyToggle" onclick="this.classList.toggle('on')"></div>
-            </div>
-
-            <div class="payment-tabs">
-              <button class="pay-tab active" onclick="selectPayTab(this,'upi')">📲 UPI</button>
-              <button class="pay-tab" onclick="selectPayTab(this,'card')">💳 Card</button>
-              <button class="pay-tab" onclick="selectPayTab(this,'netbank')">🏦 Net Banking</button>
-              <button class="pay-tab" onclick="selectPayTab(this,'wallet')">👜 Wallets</button>
-              <button class="pay-tab" onclick="selectPayTab(this,'cod')">💵 COD</button>
-            </div>
-
-            <div class="pay-content active" id="pay-upi">
-              <div class="upi-input">
-                <input type="text" placeholder="Enter UPI ID (e.g. name@upi)">
-                <button class="btn-apply">Verify</button>
-              </div>
-              <div style="font-size:0.78rem;color:var(--dk-mid);margin-bottom:0.75rem;font-weight:600;">Or pay via app:</div>
-              <div class="upi-apps">
-                <div class="upi-app"><div class="upi-emoji">🟢</div><span>GPay</span></div>
-                <div class="upi-app"><div class="upi-emoji">🔵</div><span>PhonePe</span></div>
-                <div class="upi-app"><div class="upi-emoji">🟠</div><span>Paytm</span></div>
-                <div class="upi-app"><div class="upi-emoji">🟡</div><span>BHIM</span></div>
-              </div>
-            </div>
-
-            <div class="pay-content" id="pay-card">
-              <div class="form-grid single">
-                <div class="form-group"><label>Card Number</label><input type="text" placeholder="1234 5678 9012 3456" maxlength="19"></div>
-                <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="Name on card"></div>
-                <div class="form-group"><label>Expiry Date</label><input type="text" placeholder="MM/YY"></div>
-                <div class="form-group"><label>CVV</label><input type="text" placeholder="•••" maxlength="4"></div>
-              </div>
-              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin-top:0.6rem;cursor:pointer;color:var(--dk-mid);">
-                <input type="checkbox" style="accent-color:var(--dk-orange);"> Save card securely for faster checkout
-              </label>
-            </div>
-
-            <div class="pay-content" id="pay-netbank">
-              <div class="form-group"><label>Select Bank</label>
-                <select><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra</option><option>Other</option></select>
-              </div>
-            </div>
-
-            <div class="pay-content" id="pay-wallet">
-              <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                <button class="pay-tab" onclick="showToast('Paytm wallet selected','info')">🟠 Paytm</button>
-                <button class="pay-tab" onclick="showToast('Amazon Pay selected','info')">🔵 Amazon Pay</button>
-                <button class="pay-tab" onclick="showToast('Freecharge selected','info')">🟢 Freecharge</button>
-              </div>
-            </div>
-
-            <div class="pay-content" id="pay-cod">
-              <div class="cod-note">💵 Cash on Delivery: Pay ₹344 in cash when your order arrives. A ₹29 COD handling fee applies.</div>
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.75rem;">
-            <span style="font-size:1rem;">🔒</span>
-            <span style="font-size:0.78rem;color:var(--dk-mid);font-weight:600;">256-bit SSL Encrypted · PCI DSS Compliant · Safe & Secure</span>
-          </div>
-          <button class="step-cta danger" onclick="placeOrder()">🔒 Place Order · Pay ₹344</button>
-          <div class="back-link" onclick="backToShipping()">← Back to Shipping</div>
-        </div>
-
-      </div>
-
-      <!-- MINI ORDER SUMMARY -->
-      <div>
-        <div class="mini-summary">
-          <div class="summary-title">Order Summary</div>
-          <div class="mini-item">
-            <div class="mini-item-img"><div style="width:100%;height:100%;background:#ffe4c4;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🍮</div></div>
-            <div class="mini-item-name">K.C.Das Rasgullas 500g × 1</div>
-            <div class="mini-item-price">₹249</div>
-          </div>
-          <div class="mini-item">
-            <div class="mini-item-img"><div style="width:100%;height:100%;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🥜</div></div>
-            <div class="mini-item-name">Haldiram's Kaju Mixture 400g × 1</div>
-            <div class="mini-item-price">₹199</div>
-          </div>
-          <hr class="mini-divider">
-          <div class="summary-row"><span>Subtotal</span><span>₹448</span></div>
-          <div class="summary-row discount"><span>Discount</span><span>−₹120</span></div>
-          <div class="summary-row"><span>Delivery</span><span style="color:var(--dk-green);font-weight:700;">FREE</span></div>
-          <div class="summary-row"><span>GST (5%)</span><span>₹16</span></div>
-          <hr class="mini-divider">
-          <div class="summary-row total"><span>Total</span><span>₹344</span></div>
-          <div class="savings-banner">🎉 You save ₹120!</div>
-          <div style="text-align:center;margin-top:0.5rem;">
-            <div class="trust-badge" style="justify-content:center;font-size:0.72rem;">🔒 Secure Checkout</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="email-form">
+    <input class="email-input" type="email" placeholder="Enter your email address...">
+    <button class="btn-primary" onclick="showToast('🎉 You\'re subscribed! Welcome to the family.')">Subscribe</button>
   </div>
-</div>
+  <p style="font-size:12px; color:var(--text-light); margin-top:16px;">No spam ever. Unsubscribe anytime. 💌</p>
+</section>
 
-<!-- ═══════════════════════════════════════ -->
-<!--  PAGE 4: ORDER CONFIRMATION             -->
-<!-- ═══════════════════════════════════════ -->
-<div id="page-confirm" class="page">
-  <div class="confirm-wrap">
-    <div class="confirm-icon">🎉</div>
-    <h2 class="confirm-title">Order Placed Successfully!</h2>
-    <p class="confirm-sub">Thank you for shopping with DeliciousKart. Your delicious order is confirmed!</p>
-
-    <div class="order-card">
-      <div class="order-id">Order ID: <strong>#DK2025070348</strong></div>
-      <hr style="border:none;border-top:1px solid var(--dk-border);margin:0.75rem 0;">
-      <div class="order-detail-row"><span>Items</span><span>K.C.Das Rasgullas, Haldiram's Kaju Mixture</span></div>
-      <div class="order-detail-row"><span>Delivery Address</span><span>12, Rose Garden, Hyderabad – 500034</span></div>
-      <div class="order-detail-row"><span>Expected Delivery</span><span style="color:var(--dk-green);font-weight:700;">Thursday, 3 July 2025</span></div>
-      <div class="order-detail-row"><span>Amount Paid</span><span style="color:var(--dk-red);font-weight:800;">₹344</span></div>
-      <div class="order-detail-row"><span>Payment</span><span>UPI · G Pay</span></div>
-    </div>
-
-    <div class="confirm-actions">
-      <button class="btn-track" onclick="showToast('Track Order feature coming soon!','info')">📦 Track Order</button>
-      <button class="btn-invoice" onclick="showToast('Invoice download ready!','success')">⬇️ Download Invoice</button>
-    </div>
-    <button class="whatsapp-btn" onclick="showToast('WhatsApp confirmation sent!','success')">💬 Share on WhatsApp</button>
-
-    <!-- POST-ORDER SIGN UP -->
-    <div class="post-signup">
-      <div class="post-signup-title">⚡ Track orders faster next time!</div>
-      <p>Create your account — we've filled in most of the details for you.</p>
-      <input type="email" value="priya@email.com" placeholder="Email">
-      <input type="password" placeholder="Create a password">
-      <button class="btn-create-acc" onclick="showToast('Account created successfully! 🎉','success')">Create My Account</button>
-    </div>
-
-    <div style="margin-top:1.5rem;">
-      <div class="section-title" style="text-align:center;">You Might Also Love</div>
-      <div class="products-row" style="justify-content:center;">
-        <div class="prod-mini-card" onclick="goToProduct()">
-          <div class="prod-mini-img"><div style="width:100%;height:100%;background:#fce7f3;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍬</div></div>
-          <div class="prod-mini-body"><div class="prod-mini-name">Soan Papdi</div><div class="prod-mini-price">₹180</div></div>
-          <button class="btn-mini-add" onclick="event.stopPropagation();showToast('Added! ✓','success')">+ Add</button>
-        </div>
-        <div class="prod-mini-card">
-          <div class="prod-mini-img"><div style="width:100%;height:100%;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🍩</div></div>
-          <div class="prod-mini-body"><div class="prod-mini-name">Cham Cham</div><div class="prod-mini-price">₹229</div></div>
-          <button class="btn-mini-add" onclick="showToast('Added! ✓','success')">+ Add</button>
-        </div>
-      </div>
-    </div>
-    <button class="btn-checkout" onclick="goToProduct()" style="margin-top:1.5rem;">🛍️ Continue Shopping</button>
-  </div>
-</div>
-
-<!-- ─── WISHLIST SIDE PANEL ──────────────── -->
-<div class="overlay" id="overlay" onclick="closeWishlist()"></div>
-<div class="wishlist-panel" id="wishlistPanel">
-  <div class="panel-header">
-    <div class="panel-title">❤️ Your Wishlist</div>
-    <div class="panel-close" onclick="closeWishlist()">✕</div>
-  </div>
-  <div class="wishlist-item">
-    <div class="wi-img"><div style="width:100%;height:100%;background:#ffe4c4;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🍮</div></div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
     <div>
-      <div class="wi-name">K.C.Das Rasgullas 1kg</div>
-      <div class="wi-price">₹449</div>
-      <div class="wi-add" onclick="showToast('Added to cart ✓','success')">Add to Cart →</div>
+      <span class="footer-logo"><span>D</span>elicious<span>K</span>art</span>
+      <p class="footer-desc">India's most loved online destination for authentic regional foods, handpicked from legendary local brands across the country — delivered fresh to your door.</p>
+      <div class="social-links">
+        <a class="social-link" title="Facebook">f</a>
+        <a class="social-link" title="Instagram">in</a>
+        <a class="social-link" title="YouTube">▶</a>
+        <a class="social-link" title="LinkedIn">li</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul class="footer-links">
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Best Sellers</a></li>
+        <li><a href="#">Festive Hampers</a></li>
+        <li><a href="#">Shop by Brand</a></li>
+        <li><a href="#">Shop by City</a></li>
+        <li><a href="#">All Products</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul class="footer-links">
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">Returns & Refunds</a></li>
+        <li><a href="#">Shipping Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul class="footer-links">
+        <li><a href="mailto:support@deliciouskart.com">support@deliciouskart.com</a></li>
+        <li><a href="tel:9319593439">+91-9319593439</a></li>
+        <li><a href="tel:8130890500">+91-8130890500</a></li>
+        <li><a href="#">Mon–Sat, 10am–7pm</a></li>
+      </ul>
     </div>
   </div>
-  <div class="wishlist-item">
-    <div class="wi-img"><div style="width:100%;height:100%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎁</div></div>
-    <div>
-      <div class="wi-name">Festive Gift Hamper</div>
-      <div class="wi-price">₹999</div>
-      <div class="wi-add" onclick="showToast('Added to cart ✓','success')">Add to Cart →</div>
-    </div>
+  <div class="footer-bottom">
+    <p>© 2026 DeliciousKart. All rights reserved. <span class="made">#MadeInIndia 🇮🇳</span></p>
+    <p>Privacy Policy · Terms · Sitemap</p>
+  </div>
+</footer>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>🛒 My Cart</h3>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
+    <div class="cart-savings" id="cartSavings"></div>
+    <button class="checkout-btn" onclick="showToast('🎉 Redirecting to checkout...')">Proceed to Checkout →</button>
   </div>
 </div>
 
-<!-- ─── TOAST ────────────────────────────── -->
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<footer>© 2025 DeliciousKart. All rights reserved. &nbsp;|&nbsp; Made with ❤️ in India</footer>
-
 <script>
-/* ─── PAGE NAVIGATION ─────────────────── */
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-function goToCart() { showPage('page-cart'); }
-function goToProduct() { showPage('page-product'); }
-function goToCheckout() { showPage('page-checkout'); }
+// ─── DATA ───
+const products = [
+  { id:1, name:"Rossogolla", brand:"K.C. Das, Kolkata", origin:"Kolkata, WB", price:420, originalPrice:520, emoji:"🍮", badge:"best", category:"sweets", tag:"🎖️ GI Tagged" },
+  { id:2, name:"Fruit Biscuit", brand:"Karachi Bakery, Hyderabad", origin:"Hyderabad, TS", price:320, originalPrice:380, emoji:"🍪", badge:"best", category:"snacks" },
+  { id:3, name:"Soan Papdi", brand:"Bikanervala, Delhi", origin:"Old Delhi", price:280, originalPrice:320, emoji:"🍬", badge:"new", category:"sweets" },
+  { id:4, name:"Masala Chai Blend", brand:"TGL Co., Mumbai", origin:"Mumbai, MH", price:349, originalPrice:399, emoji:"🍵", badge:"new", category:"beverages" },
+  { id:5, name:"Kaju Katli 500g", brand:"Haldiram's, Nagpur", origin:"Nagpur, MH", price:580, originalPrice:680, emoji:"🥮", badge:"best", category:"sweets" },
+  { id:6, name:"Premium Cashews", brand:"Happilo, Bengaluru", origin:"Bengaluru, KA", price:399, originalPrice:499, emoji:"🥜", badge:null, category:"nuts" },
+  { id:7, name:"Alphonso Mango Pickle", brand:"Shri Krishna Pickles", origin:"Najafgarh, DL", price:199, originalPrice:249, emoji:"🫙", badge:"sale", category:"pickles" },
+  { id:8, name:"Dark Chocolate Bar", brand:"The Belgian, Belgium", origin:"Belgium 🇧🇪", price:299, originalPrice:349, emoji:"🍫", badge:"new", category:"chocolate" },
+  { id:9, name:"Baklava Box", brand:"Lovely Sweets, Jalandhar", origin:"Jalandhar, PB", price:710, originalPrice:850, emoji:"🧁", badge:"best", category:"sweets" },
+  { id:10, name:"Aloo Bhujia", brand:"Bikaji, Bikaner", origin:"Bikaner, RJ", price:140, originalPrice:160, emoji:"🌾", badge:null, category:"snacks" },
+  { id:11, name:"Tilpatti", brand:"Shri Shyam Tilpatti", origin:"Jaipur, RJ", price:180, originalPrice:210, emoji:"🍯", badge:null, category:"sweets" },
+  { id:12, name:"Schogetten Chocolate", brand:"Schogetten, Germany", origin:"Germany 🇩🇪", price:249, originalPrice:299, emoji:"🍫", badge:"sale", category:"chocolate" },
+];
 
-/* ─── PRODUCT PAGE ─────────────────── */
-let qty = 1;
-const weightData = {
-  '500g':  { price:'₹249', mrp:'₹319', save:'Save ₹70', unit:'₹4.98 per piece · Approx. 50 pieces' },
-  '1 kg':  { price:'₹449', mrp:'₹579', save:'Save ₹130', unit:'₹4.49 per piece · Approx. 100 pieces' },
-  '2 kg':  { price:'₹849', mrp:'₹1099', save:'Save ₹250', unit:'₹4.25 per piece · Approx. 200 pieces' },
-};
-function selectWeight(el, key, price, mrp) {
-  document.querySelectorAll('.weight-option').forEach(e => e.classList.remove('active'));
-  el.classList.add('active');
-  const d = weightData[key];
-  document.getElementById('priceMain').textContent = d.price;
-  document.getElementById('priceMrp').textContent = d.mrp;
-  document.getElementById('priceSave').textContent = d.save;
-  document.getElementById('pricePerUnit').textContent = d.unit;
-}
-function changeQty(delta) {
-  qty = Math.max(1, qty + delta);
-  document.getElementById('qtyNum').textContent = qty;
-}
-function addToCart() {
-  let badge = document.getElementById('cartBadge');
-  badge.textContent = parseInt(badge.textContent) + 1;
-  showToast('Added to cart ✓', 'success');
-}
-function buyNow() {
-  let badge = document.getElementById('cartBadge');
-  badge.textContent = parseInt(badge.textContent) + 1;
-  goToCheckout();
-  showToast('Proceeding to checkout...', 'info');
-}
-function toggleWishlist() {
-  const btn = document.getElementById('wishBtn');
-  btn.classList.toggle('active');
-  if (btn.classList.contains('active')) {
-    btn.textContent = '♥';
-    showToast('Added to Wishlist ❤️', 'success');
-  } else {
-    btn.textContent = '♡';
-    showToast('Removed from Wishlist', 'info');
-  }
-}
-function checkPincode(val) {}
-function verifyPincode() {
-  const val = document.getElementById('pincodeInput').value;
-  if (val.length === 6) {
-    document.getElementById('deliveryResult').classList.add('show');
-  }
+const brands = ["Haldiram's","K.C. Das","Karachi Bakery","Bikanervala","Bikaji","Happilo","Lindt","Nestlé","Paper Boat","Tabasco","TGL Co.","True Elements","Kanwarji's","Kayani Bakery","Fabbox","Ghasitaram","Lovely Sweets","Nando's","Heinz","Raw Pressery","Organic India","Davidoff","Pringles","Nongshim","Fever-Tree"];
+
+let cart = {};
+let currentFilter = 'all';
+
+// ─── RENDER BRANDS ───
+function renderBrands() {
+  const track = document.getElementById('brandsTrack');
+  const doubled = [...brands, ...brands];
+  track.innerHTML = doubled.map(b => `<div class="brand-pill">${b}</div>`).join('');
 }
 
-/* ─── CART ─────────────────────────── */
-function cartQty(btn, delta) {
-  const numEl = btn.parentElement.querySelector('.cq-num');
-  let n = Math.max(1, parseInt(numEl.textContent) + delta);
-  numEl.textContent = n;
-}
-function applyCoupon() {
-  const code = document.getElementById('couponInput').value.trim().toUpperCase();
-  if (code === 'WELCOME10') {
-    document.getElementById('couponDiscount').textContent = '−₹34';
-    showToast('Coupon WELCOME10 applied! Saved ₹34 🎉', 'success');
-  } else {
-    showToast('Invalid coupon code', 'info');
-  }
+// ─── RENDER PRODUCTS ───
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+
+  grid.innerHTML = filtered.map(p => {
+    const inCart = cart[p.id] || 0;
+    const badgeHTML = p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === 'best' ? '🏆 Bestseller' : p.badge === 'new' ? '✨ New' : '🔥 Sale'}</span>` : '';
+    const btnHTML = inCart > 0
+      ? `<div class="qty-control">
+           <button class="qty-btn" onclick="updateQty(${p.id},-1)">−</button>
+           <span class="qty-num">${inCart}</span>
+           <button class="qty-btn" onclick="updateQty(${p.id},1)">+</button>
+         </div>`
+      : `<button class="add-btn" onclick="addToCart(${p.id})">+ Add</button>`;
+
+    return `
+      <div class="product-card" data-id="${p.id}">
+        ${badgeHTML}
+        <button class="wishlist-btn" onclick="toggleWish(this)" title="Add to Wishlist">🤍</button>
+        <div class="product-img">${p.emoji}</div>
+        <div class="product-info">
+          <div class="product-origin">📍 ${p.origin} ${p.tag || ''}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-bottom">
+            <div class="price-block">
+              <div class="price-original">₹${p.originalPrice}</div>
+              <div class="price-current"><span>₹</span>${p.price}</div>
+            </div>
+            <div id="btn-${p.id}">${btnHTML}</div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
-/* ─── SEARCH ─────────────────────────── */
-function showSuggestions(val) {}
+// ─── CART ───
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartUI();
+  renderProducts();
+  const p = products.find(x => x.id === id);
+  showToast(`${p.emoji} ${p.name} added to cart!`);
+}
 
-/* ─── CHECKOUT ────────────────────────── */
-function useLoggedIn() {
-  document.getElementById('authBlock').style.display = 'none';
-  document.getElementById('savedAddrBlock').style.display = 'block';
-  document.getElementById('deliveryBlock').style.display = 'block';
-  document.getElementById('shippingCta').style.display = 'block';
-  showToast('Signed in successfully ✓', 'success');
+function updateQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  updateCartUI();
+  renderProducts();
+  renderCartItems();
 }
-function useGuest() {
-  document.getElementById('authBlock').style.display = 'none';
-  document.getElementById('guestFormBlock').style.display = 'block';
-  document.getElementById('deliveryBlock').style.display = 'block';
-  document.getElementById('shippingCta').style.display = 'block';
+
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+  renderProducts();
+  renderCartItems();
 }
-function autoDetectState(val) {
-  if (val.length === 6) {
-    const stateMap = {'500':' Telangana','400':'Maharashtra','110':'Delhi','600':'Tamil Nadu','700':'West Bengal'};
-    const prefix = val.substring(0,3);
-    const prefix2 = val.substring(0,2);
-    document.getElementById('stateField').value = stateMap[prefix] || stateMap[prefix2] || 'Andhra Pradesh';
+
+function updateCartUI() {
+  const total = Object.values(cart).reduce((a,b) => a+b, 0);
+  document.getElementById('cartCount').textContent = total;
+}
+
+function renderCartItems() {
+  const el = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  const ids = Object.keys(cart);
+
+  if (!ids.length) {
+    el.innerHTML = `<div class="cart-empty"><span class="em">🛒</span><h4>Your cart is empty</h4><p>Add some legendary flavors!</p></div>`;
+    footer.style.display = 'none';
+    return;
   }
+
+  let subtotal = 0, saved = 0;
+  el.innerHTML = ids.map(id => {
+    const p = products.find(x => x.id == id);
+    const qty = cart[id];
+    subtotal += p.price * qty;
+    saved += (p.originalPrice - p.price) * qty;
+    return `
+      <div class="cart-item">
+        <div class="cart-item-img">${p.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${p.name}</div>
+          <div class="cart-item-brand">${p.brand}</div>
+          <div class="cart-item-bottom">
+            <div class="qty-control">
+              <button class="qty-btn" onclick="updateQty(${p.id},-1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" onclick="updateQty(${p.id},1)">+</button>
+            </div>
+            <span class="cart-item-price">₹${p.price * qty}</span>
+            <button class="remove-item" onclick="removeFromCart(${p.id})">🗑</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  footer.style.display = 'block';
+  document.getElementById('cartTotal').textContent = `₹${subtotal}`;
+  document.getElementById('cartSavings').textContent = saved > 0 ? `🎉 You're saving ₹${saved} on this order!` : '';
 }
-function goToPayment() {
-  document.getElementById('step-shipping').classList.remove('active');
-  document.getElementById('step-payment').classList.add('active');
-  // Update progress
-  document.getElementById('p2').classList.remove('active'); document.getElementById('p2').classList.add('done'); document.getElementById('p2').textContent = '✓';
-  document.getElementById('pl2').classList.remove('active'); document.getElementById('pl2').classList.add('done');
-  document.getElementById('p3').classList.add('active');
-  document.getElementById('pl3').classList.add('active');
-  document.getElementById('line2').classList.add('done');
-  window.scrollTo({top:0,behavior:'smooth'});
+
+function openCart() {
+  renderCartItems();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function backToShipping() {
-  document.getElementById('step-payment').classList.remove('active');
-  document.getElementById('step-shipping').classList.add('active');
-  document.getElementById('p2').classList.add('active'); document.getElementById('p2').classList.remove('done'); document.getElementById('p2').textContent = '2';
-  document.getElementById('pl2').classList.add('active'); document.getElementById('pl2').classList.remove('done');
-  document.getElementById('p3').classList.remove('active');
-  document.getElementById('pl3').classList.remove('active');
-  document.getElementById('line2').classList.remove('done');
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.body.style.overflow = '';
 }
-function placeOrder() {
-  showToast('Processing your order... 🔒', 'info');
-  setTimeout(() => {
-    showPage('page-confirm');
-    // Update progress
-    ['p2','p3','p4'].forEach((id,i) => {
-      const el = document.getElementById(id);
-      el.classList.remove('active'); el.classList.add('done'); el.textContent = '✓';
-    });
-    ['pl2','pl3','pl4'].forEach(id => {
-      document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('done');
-    });
-    ['line1','line2','line3'].forEach(id => document.getElementById(id).classList.add('done'));
-  }, 1200);
-}
-function selectDelivery(el) {
-  document.querySelectorAll('.delivery-option').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function selectPayTab(btn, id) {
-  document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
+
+// ─── FILTERS ───
+function setFilter(btn, category) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.pay-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('pay-'+id).classList.add('active');
+  currentFilter = category;
+  renderProducts();
 }
 
-/* ─── WISHLIST PANEL ──────────────────── */
-function showWishlist() {
-  document.getElementById('wishlistPanel').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
-}
-function closeWishlist() {
-  document.getElementById('wishlistPanel').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
+function filterProducts(category) {
+  currentFilter = category;
+  // update cat cards
+  document.querySelectorAll('.cat-card').forEach((c, i) => c.classList.remove('active'));
+  // find and activate
+  const catMap = { all:0, sweets:1, snacks:2, beverages:3, nuts:4, pickles:5, chocolate:6, cooking:7, instant:8, gifts:9 };
+  const cards = document.querySelectorAll('.cat-card');
+  if (cards[catMap[category]]) cards[catMap[category]].classList.add('active');
+  renderProducts();
+  document.getElementById('products').scrollIntoView({ behavior:'smooth' });
 }
 
-/* ─── TOAST ────────────────────────────── */
-function showToast(msg, type='info') {
+// ─── WISHLIST ───
+function toggleWish(btn) {
+  const active = btn.classList.toggle('active');
+  btn.textContent = active ? '❤️' : '🤍';
+  showToast(active ? '❤️ Added to wishlist!' : 'Removed from wishlist');
+}
+
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = (type==='success'?'✅ ':'ℹ️ ') + msg;
-  t.className = 'toast show ' + type;
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-/* ─── CATEGORY LINKS ──────────────────── */
-document.querySelectorAll('.cat-link').forEach(l => {
-  l.addEventListener('click', function() {
-    document.querySelectorAll('.cat-link').forEach(x => x.classList.remove('active'));
-    this.classList.add('active');
-  });
+// ─── MOBILE MENU ───
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ─── SCROLL ───
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
 });
-document.querySelectorAll('.thumb').forEach(t => {
-  t.addEventListener('click', function() {
-    document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+
+// ─── INIT ───
+renderBrands();
+renderProducts();
 </script>
 </body>
 </html>
